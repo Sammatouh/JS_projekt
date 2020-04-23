@@ -1,3 +1,3 @@
-# Projekt semestralny z przedmiotu Jęsyki Symboliczne
+# Scorch
 
 Prosta gra typu artillery game

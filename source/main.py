@@ -23,30 +23,6 @@ pygame.display.set_icon(icon)
 cannon_image_left = pygame.image.load(r"assets\cannon\cannon_left.png")
 cannon_image_right = pygame.image.load(r"assets\cannon\cannon_right.png")
 
-# cannon_image_left = [pygame.image.load(r"assets\cannon\l-1.png"), pygame.image.load(r"assets\cannon\l-2.png"),
-#                          pygame.image.load(r"assets\cannon\l-3.png"), pygame.image.load(r"assets\cannon\l-4.png"),
-#                          pygame.image.load(r"assets\cannon\l-5.png"), pygame.image.load(r"assets\cannon\l-6.png"),
-#                          pygame.image.load(r"assets\cannon\l-7.png"), pygame.image.load(r"assets\cannon\l-8.png"),
-#                          pygame.image.load(r"assets\cannon\l-9.png"), pygame.image.load(r"assets\cannon\l-10.png"),
-#                          pygame.image.load(r"assets\cannon\l-11.png"), pygame.image.load(r"assets\cannon\l-12.png"),
-#                          pygame.image.load(r"assets\cannon\l-13.png"), pygame.image.load(r"assets\cannon\l-14.png"),
-#                          pygame.image.load(r"assets\cannon\l-15.png"), pygame.image.load(r"assets\cannon\l-16.png"),
-#                          pygame.image.load(r"assets\cannon\l-17.png"), pygame.image.load(r"assets\cannon\l-18.png"),
-#                          pygame.image.load(r"assets\cannon\l-19.png"), pygame.image.load(r"assets\cannon\l-20.png"),
-#                          pygame.image.load(r"assets\cannon\l-21.png")]
-# 
-# cannon_image_right = [pygame.image.load(r"assets\cannon\r-1.png"), pygame.image.load(r"assets\cannon\r-2.png"),
-#                           pygame.image.load(r"assets\cannon\r-3.png"), pygame.image.load(r"assets\cannon\r-4.png"),
-#                           pygame.image.load(r"assets\cannon\r-5.png"), pygame.image.load(r"assets\cannon\r-6.png"),
-#                           pygame.image.load(r"assets\cannon\r-7.png"), pygame.image.load(r"assets\cannon\r-8.png"),
-#                           pygame.image.load(r"assets\cannon\r-9.png"), pygame.image.load(r"assets\cannon\r-10.png"),
-#                           pygame.image.load(r"assets\cannon\r-11.png"), pygame.image.load(r"assets\cannon\r-12.png"),
-#                           pygame.image.load(r"assets\cannon\r-13.png"), pygame.image.load(r"assets\cannon\r-14.png"),
-#                           pygame.image.load(r"assets\cannon\r-15.png"), pygame.image.load(r"assets\cannon\r-16.png"),
-#                           pygame.image.load(r"assets\cannon\r-17.png"), pygame.image.load(r"assets\cannon\r-18.png"),
-#                           pygame.image.load(r"assets\cannon\r-19.png"), pygame.image.load(r"assets\cannon\r-20.png"),
-#                           pygame.image.load(r"assets\cannon\r-21.png")]
-
 clock = pygame.time.Clock()
 font = pygame.font.SysFont(None, 18)
 
@@ -141,7 +117,7 @@ class Terrain:
             pixels[x, 0:self.heights[x]] = self.transparent_color
             pixels[x, self.heights[x]:self.height] = self.ground_color
 
-        # płaski kawałek terenu dla 1 gracza
+        # płaski kawałek terenu dla graczy  !wymaga poprawki
         if self.heights[34] < self.heights[84]:
             x_1 = 34
         else:
@@ -167,6 +143,7 @@ class Terrain:
 
         return [(a - min) * new_range // range + new_lower_bound for a in data]
 
+    # dodawanie płaskiego terenu jako osobna metoda?
     def add_flat(self):
         pass
 
@@ -187,6 +164,7 @@ terrain = Terrain(scr_width, scr_height, 200)
 terrain.generate()
 players = [Player(34, terrain.heights[34]-46, defs.left), Player(906, terrain.heights[921]-46, defs.right)]
 current_player = players[0]
+
 # main loop
 running = True
 while running:

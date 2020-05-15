@@ -1,4 +1,4 @@
-# Scorch
+# Scorch Artillery Game
 
 Prosta gra typu artillery game.
 

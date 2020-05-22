@@ -23,6 +23,10 @@ class Terrain:
         self.ground_color = None
         self.base_color = None
 
+        self.mask = None
+        # self.mask = pygame.mask.Mask((self.width, self.height))
+        # self.mask.clear()
+
     def generate(self):
         """Metoda generująca teren za pomocą algorytmu midpoint displacement"""
 
@@ -57,22 +61,29 @@ class Terrain:
             pixels[x, self.heights[x]:self.height] = self.ground_color
 
         # płaski kawałek terenu dla graczy  !wymaga poprawki
-        if self.heights[34] < self.heights[84]:
-            x_1 = 34
+        if self.heights[defs.LEFT_PLR_X] < self.heights[defs.LEFT_PLR_X + defs.CANNON_W]:
+            x_1 = defs.LEFT_PLR_X
         else:
-            x_1 = 84
-        if self.heights[921] < self.heights[971]:
-            x_2 = 921
+            x_1 = defs.LEFT_PLR_X + defs.CANNON_W
+        if self.heights[defs.RIGHT_PLR_X] < self.heights[defs.RIGHT_PLR_X + defs.CANNON_W]:
+            x_2 = defs.RIGHT_PLR_X
         else:
-            x_2 = 971
-        for x in range(34, 84):
+            x_2 = defs.RIGHT_PLR_X + defs.CANNON_W
+        for x in range(defs.LEFT_PLR_X, defs.LEFT_PLR_X + defs.CANNON_W):
             pixels[x, 0:self.heights[x_1]] = self.transparent_color
             pixels[x, self.heights[x_1]:self.heights[x]] = self.base_color
             self.heights[x] = self.heights[x_1]
-        for x in range(921, 971):
+        for x in range(defs.RIGHT_PLR_X, defs.RIGHT_PLR_X + defs.CANNON_W):
             pixels[x, 0:self.heights[x_2]] = self.transparent_color
             pixels[x, self.heights[x_2]:self.heights[x]] = self.base_color
             self.heights[x] = self.heights[x_2]
+
+        self.mask = pygame.mask.from_surface(self.surface)
+        # # ustawienie maski terenu
+        # for i in range(self.width):
+        #     for j in range(self.height):
+        #         if pixels[i, j] == self.ground_color:
+        #             self.mask.set_at((i, j))
 
     def normalize(self, data, new_lower_bound, new_upper_bound):
         """Metoda ograniczająca wysokości terenu"""
@@ -83,6 +94,26 @@ class Terrain:
         new_range = new_upper_bound - new_lower_bound
 
         return [(a - min) * new_range // range + new_lower_bound for a in data]
+
+    def make_hole(self, x, y, rad):
+        """Tworzy dziuręw miejscu uderzenia pocisku"""
+        pixels = pygame.surfarray.pixels2d(self.surface)
+        w, h = pixels.shape
+        cl, cr, ct, cb = x-rad, x+rad, y-rad, y+rad
+        if cl < 0:
+            cl = 0
+        if cr >= w:
+            cr = w-1
+        if ct < 0:
+            ct = 0
+        if cb >= h:
+            cb = h-1
+        for i in range(cl, cr):
+            for j in range(ct, cb):
+                if((i-x)**2 + (j-y)**2) < rad**2:
+                    pixels[i, j] = self.transparent_color
+
+        self.mask = pygame.mask.from_surface(self.surface)
 
     # dodawanie płaskiego terenu jako osobna metoda?
     def add_flat(self):

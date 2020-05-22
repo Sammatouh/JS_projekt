@@ -1,5 +1,4 @@
 # Scorch-Artillery-Game
-Języki Symboliczne, projekt
 
 Prosta gra typu artillery game.
 

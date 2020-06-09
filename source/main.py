@@ -1,17 +1,22 @@
+"""Moduł główny programu"""
+
 from game import *
 
 
 def main():
     pygame.init()
-    pygame.display.set_caption("Scorch")
-    pygame.display.set_icon(defs.icon)
+    defs.Assets.load()
+
+    pygame.display.set_caption("Scorch-Artillery-Game")
+    pygame.display.set_icon(defs.Assets.ICON)
 
     clock = pygame.time.Clock()
     clock.tick(30)
-    font = pygame.font.SysFont(None, 18)
-    game = Game(defs.SCR_WIDTH, defs.SCR_HEIGHT, clock, font)
+    game = Game(defs.SCR_WIDTH, defs.SCR_HEIGHT, clock)
 
-    game.game_loop()
+    while game.running:
+        game.new_game()
+        game.game_loop()
 
 
 if __name__ == "__main__":

@@ -5,9 +5,8 @@ import math
 import defs
 
 
-class Player(pygame.sprite.Sprite):
+class Player:
     def __init__(self, game, x, y, side):
-        pygame.sprite.Sprite.__init__(self)
         self.game = game
         self.x = x
         self.y = y
@@ -16,7 +15,7 @@ class Player(pygame.sprite.Sprite):
         self.power = 40
         self.image_sx, self.image_sy = 0, 0
         self.rect = pygame.Rect(x, y, defs.CANNON_W, defs.CANNON_H)
-        self.image = defs.cannon_image[self.side]
+        self.image = defs.Assets.CANNON_IMAGE[self.side]
         self.mask = pygame.mask.from_surface(self.image)
 
     def do_move(self):
@@ -46,14 +45,13 @@ class Player(pygame.sprite.Sprite):
         sx, sy, v_dx = 0, 0, 0
         if self.side == defs.LEFT:
             v_dx = math.cos(radian) * self.power
-            sx = (64 - 31) * math.cos(radian) + (27 - 31) * math.sin(radian) + 31 + self.rect.left
-            sy = (27 - 31) * math.cos(radian) - (64 - 31) * math.sin(radian) + 31 + self.rect.top
+            sx = defs.MAGIC_1 * math.cos(radian) + defs.MAGIC_3 * math.sin(radian) + defs.MAGIC_2 + self.rect.left
+            sy = defs.MAGIC_3 * math.cos(radian) - defs.MAGIC_1 * math.sin(radian) + defs.MAGIC_2 + self.rect.top
         elif self.side == defs.RIGHT:
             v_dx = -math.cos(radian) * self.power
-            sx = (0 - 34) * math.cos(radian) - (27 - 31) * math.sin(radian) + 34 + self.rect.left
-            sy = (27 - 31) * math.cos(radian) + (0 - 34) * math.sin(radian) + 31 + self.rect.top
-        # print("SHOOT!")
-        # print(sx, sy, v_dx, v_dy)
+            sx = -defs.MAGIC_1 * math.cos(radian) - defs.MAGIC_3 * math.sin(radian) + defs.MAGIC_1 + self.rect.left
+            sy = defs.MAGIC_3 * math.cos(radian) - defs.MAGIC_1 * math.sin(radian) + defs.MAGIC_2 + self.rect.top
+
         return (sx, sy), (v_dx, v_dy) # 1. krotka - początkowe położenie pocisku; 2. krotka - prędkości według osi X i Y
 
     def draw(self, surface):
@@ -61,13 +59,12 @@ class Player(pygame.sprite.Sprite):
         self.image_sx = (self.barrel_angle % defs.CANNON_IMG_COLS) * defs.CANNON_W
         self.image_sy = (self.barrel_angle // defs.CANNON_IMG_COLS) * defs.CANNON_H
         plr_surface = pygame.Surface((defs.CANNON_W, defs.CANNON_H))
-        plr_surface.fill(defs.TRANSPARENT_COLOR)
-        plr_surface.set_colorkey(defs.TRANSPARENT_COLOR)
+        plr_surface.fill(defs.Colors.TRANSPARENT_COLOR)
+        plr_surface.set_colorkey(defs.Colors.TRANSPARENT_COLOR)
         plr_surface.blit(self.image, (0, 0),
                      pygame.Rect(self.image_sx, self.image_sy, defs.CANNON_W, defs.CANNON_H))
 
         surface.blit(plr_surface, (self.x, self.y))
-        # self.mask = pygame.mask.from_surface(plr_surface)
 
         if self.game.current_player == self:
             self.game.info_to_screen("Angle: {}".format(self.barrel_angle), self.x, 10)

@@ -24,18 +24,16 @@ class Terrain:
         self.base_color = None
 
         self.mask = None
-        # self.mask = pygame.mask.Mask((self.width, self.height))
-        # self.mask.clear()
 
     def generate(self):
         """Metoda generująca teren za pomocą algorytmu midpoint displacement"""
 
         self.surface = pygame.Surface((self.width, self.height))
         self.surface = self.surface.convert()
-        self.surface.set_colorkey(defs.TRANSPARENT_COLOR, pygame.RLEACCEL)
-        self.surface.set_at((0, 0), defs.TERRAIN_COLOR)
-        self.surface.set_at((1, 0), defs.TRANSPARENT_COLOR)
-        self.surface.set_at((2, 0), defs.BASE_COLOR)
+        self.surface.set_colorkey(defs.Colors.TRANSPARENT_COLOR, pygame.RLEACCEL)
+        self.surface.set_at((0, 0), defs.Colors.TERRAIN_COLOR)
+        self.surface.set_at((1, 0), defs.Colors.TRANSPARENT_COLOR)
+        self.surface.set_at((2, 0), defs.Colors.BASE_COLOR)
         pixels = pygame.surfarray.pixels2d(self.surface)
         self.ground_color = pixels[0, 0]
         self.transparent_color = pixels[1, 0]
@@ -79,11 +77,6 @@ class Terrain:
             self.heights[x] = self.heights[x_2]
 
         self.mask = pygame.mask.from_surface(self.surface)
-        # # ustawienie maski terenu
-        # for i in range(self.width):
-        #     for j in range(self.height):
-        #         if pixels[i, j] == self.ground_color:
-        #             self.mask.set_at((i, j))
 
     def normalize(self, data, new_lower_bound, new_upper_bound):
         """Metoda ograniczająca wysokości terenu"""
@@ -114,7 +107,3 @@ class Terrain:
                     pixels[i, j] = self.transparent_color
 
         self.mask = pygame.mask.from_surface(self.surface)
-
-    # dodawanie płaskiego terenu jako osobna metoda?
-    def add_flat(self):
-        pass

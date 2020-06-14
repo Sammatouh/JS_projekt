@@ -34,7 +34,6 @@ class Terrain:
 
     def generate(self):
         """Metoda generująca teren za pomocą algorytmu midpoint displacement"""
-
         self.surface = pygame.Surface((self.width, self.height))
         self.surface = self.surface.convert()
         self.surface.set_colorkey(defs.Colors.TRANSPARENT_COLOR, pygame.RLEACCEL)
@@ -65,7 +64,7 @@ class Terrain:
             pixels[x, 0:self.heights[x]] = self.transparent_color
             pixels[x, self.heights[x]:self.height] = self.ground_color
 
-        # płaski kawałek terenu dla graczy  !wymaga poprawki
+        # płaski kawałek terenu dla graczy
         if self.heights[defs.LEFT_PLR_X] < self.heights[defs.LEFT_PLR_X + defs.CANNON_W]:
             x_1 = defs.LEFT_PLR_X
         else:
@@ -87,7 +86,6 @@ class Terrain:
 
     def normalize(self, data, new_lower_bound, new_upper_bound):
         """Metoda ograniczająca wysokości terenu"""
-
         my_min = np.min(data)
         my_max = np.max(data)
         my_range = my_max - my_min
@@ -96,7 +94,7 @@ class Terrain:
         return [(a - my_min) * new_range // my_range + new_lower_bound for a in data]
 
     def make_hole(self, x, y, rad):
-        """Tworzy dziuręw miejscu uderzenia pocisku"""
+        """Tworzy dziurę w miejscu uderzenia pocisku"""
         pixels = pygame.surfarray.pixels2d(self.surface)
         w, h = pixels.shape
         cl, cr, ct, cb = x-rad, x+rad, y-rad, y+rad

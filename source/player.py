@@ -48,7 +48,7 @@ class Player:
 
     def shoot(self):
         """Metoda odpowiedzialna za obliczenie parametrów strzału
-        (zwraca początkowe położenie pocisku oraz prędkości wzdłuż osi)"""
+        zwraca początkowe położenie pocisku oraz prędkości wzdłuż osi"""
         radian = self.barrel_angle * math.pi / 180
         v_dy = math.sin(radian) * self.power
         sx, sy, v_dx = 0, 0, 0

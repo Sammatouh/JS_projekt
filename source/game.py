@@ -36,7 +36,7 @@ class Game:
         self.idle_player = None
 
     def start_screen(self):
-        """Pętla ekreanu startowego"""
+        """Pętla ekranu startowego"""
         waiting = True
         while (not self.playing) and waiting:
             self.clock.tick(defs.FPS)
@@ -108,7 +108,7 @@ class Game:
                     cords = self.terrain.mask.overlap(self.bullet.mask, (self.bullet.rect.x, self.bullet.rect.y))
                     if cords:
                         # jesli tak - zrób dziurę w miejscu uderzenia (promień - 20px)
-                        self.terrain.make_hole(cords[0], cords[1], 20)
+                        self.terrain.make_hole(cords[0], cords[1], defs.HOLE_RADIUS)
                         self.bullet_flying = False
 
                     # sprawdzanie czy pocisk trafił w przeciwnika

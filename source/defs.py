@@ -1,4 +1,6 @@
 """Zbiór stałych i obrazów"""
+# pylint: disable=too-few-public-methods
+# pylint: disable=missing-function-docstring
 
 import pygame
 
@@ -46,4 +48,5 @@ class Assets:
                         2.50: pygame.font.Font("assets/PAMPARAY.otf", 50)}
         Assets.ICON = pygame.image.load("assets/icon.png")
         Assets.BULLET_IMG = pygame.image.load("assets/bullet.png")
-        Assets.CANNON_IMAGE = {1: pygame.image.load("assets/cannon_left.png"), 2: pygame.image.load("assets/cannon_right.png")}
+        Assets.CANNON_IMAGE = {1: pygame.image.load("assets/cannon_left.png"),
+                               2: pygame.image.load("assets/cannon_right.png")}

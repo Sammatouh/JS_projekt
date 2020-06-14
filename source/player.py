@@ -1,11 +1,19 @@
 """Moduł zawierający definicję klasy gracza oraz kalsy pocisku"""
-import pygame
+# pylint: disable=too-many-instance-attributes
+# pylint: disable=too-many-function-args
+# pylint: disable=c-extension-no-member
+# pylint: disable=invalid-name
+# pylint: disable=no-member
+# pylint: disable=line-too-long
+
 import math
+import pygame
 
 import defs
 
 
 class Player:
+    """Klasa gracza"""
     def __init__(self, game, x, y, side):
         self.game = game
         self.x = x
@@ -39,7 +47,8 @@ class Player:
             return self.shoot()
 
     def shoot(self):
-        """Metoda odpowiedzialna za obliczenie parametrów strzału"""
+        """Metoda odpowiedzialna za obliczenie parametrów strzału
+        (zwraca początkowe położenie pocisku oraz prędkości wzdłuż osi)"""
         radian = self.barrel_angle * math.pi / 180
         v_dy = math.sin(radian) * self.power
         sx, sy, v_dx = 0, 0, 0
@@ -52,7 +61,8 @@ class Player:
             sx = -defs.MAGIC_1 * math.cos(radian) - defs.MAGIC_3 * math.sin(radian) + defs.MAGIC_1 + self.rect.left
             sy = defs.MAGIC_3 * math.cos(radian) - defs.MAGIC_1 * math.sin(radian) + defs.MAGIC_2 + self.rect.top
 
-        return (sx, sy), (v_dx, v_dy) # 1. krotka - początkowe położenie pocisku; 2. krotka - prędkości według osi X i Y
+        # 1. krotka - początkowe położenie pocisku; 2. krotka - prędkości według osi X i Y
+        return (sx, sy), (v_dx, v_dy)
 
     def draw(self, surface):
         """Metoda rysująca gracza na ekranie"""
@@ -62,7 +72,7 @@ class Player:
         plr_surface.fill(defs.Colors.TRANSPARENT_COLOR)
         plr_surface.set_colorkey(defs.Colors.TRANSPARENT_COLOR)
         plr_surface.blit(self.image, (0, 0),
-                     pygame.Rect(self.image_sx, self.image_sy, defs.CANNON_W, defs.CANNON_H))
+                         pygame.Rect(self.image_sx, self.image_sy, defs.CANNON_W, defs.CANNON_H))
 
         surface.blit(plr_surface, (self.x, self.y))
 

@@ -1,4 +1,9 @@
 """Moduł odpowiadajacy za wszystkie zdarzenia i czynności wykonywane podczas gry"""
+# pylint: disable=too-many-instance-attributes
+# pylint: disable=too-many-arguments
+# pylint: disable=invalid-name
+# pylint: disable=no-member
+# pylint: disable=line-too-long
 
 import pygame
 
@@ -9,7 +14,8 @@ import terrain
 
 
 class Game:
-    def __init__(self, scr_width, scr_height, clock):
+    """Klasa główna gry"""
+    def __init__(self):
         self.running = True
         self.playing = False
         self.game_over = False
@@ -17,11 +23,11 @@ class Game:
 
         self.bullet = None
 
-        self.width = scr_width
-        self.height = scr_height
+        self.width = defs.SCR_WIDTH
+        self.height = defs.SCR_HEIGHT
 
         self.screen = pygame.display.set_mode((defs.SCR_WIDTH, defs.SCR_HEIGHT))
-        self.clock = clock
+        self.clock = pygame.time.Clock()
 
         self.terrain = terrain.Terrain(self, defs.TERRAIN_ROUGHNESS)
 
@@ -30,6 +36,7 @@ class Game:
         self.idle_player = None
 
     def start_screen(self):
+        """Pętla ekreanu startowego"""
         waiting = True
         while (not self.playing) and waiting:
             self.clock.tick(defs.FPS)
@@ -70,7 +77,7 @@ class Game:
         while self.playing:
             self.clock.tick(defs.FPS)
 
-            self.screen.fill(defs.Colors.BACKGROUND_COLOR)  # background color
+            self.screen.fill(defs.Colors.BACKGROUND_COLOR)
             self.screen.blit(self.terrain.surface, (0, 0))
 
             for event in pygame.event.get():
@@ -134,6 +141,7 @@ class Game:
             self.refresh_screen()
 
     def go_screen(self):
+        """Pętla ekranu końcowego"""
         waiting = True
         while self.game_over and waiting:
             self.screen.fill(defs.Colors.BACKGROUND_COLOR)
@@ -158,8 +166,8 @@ class Game:
 
     def draw_players(self):
         """Rysuje graczy na ekranie"""
-        for player in self.players:
-            player.draw(self.screen)
+        for plr in self.players:
+            plr.draw(self.screen)
 
     def info_to_screen(self, msg, color, font, x, y):
         """Wyświetla dany tekst z początkiem w danych współrzędnych"""
@@ -169,12 +177,13 @@ class Game:
         self.screen.blit(text, text_rect)
 
     def fixed_info_to_screen(self, msg, color, font, x, y):
-        """Wyświetla dany tekst z początkiem w danych współrzędnych"""
+        """Wyświetla dany tekst ze środkiem w danych współrzędnych"""
         text = defs.Assets.FONTS[font].render(msg, True, color)
         text_rect = text.get_rect()
         text_rect.center = (x, y)
         self.screen.blit(text, text_rect)
 
     def refresh_screen(self):
+        """Odświeżanie ekranu"""
         self.draw_players()
         pygame.display.flip()

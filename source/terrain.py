@@ -1,4 +1,10 @@
 """Moduł odpowiedzialny za generację terenu"""
+# pylint: disable=invalid-name
+# pylint: disable=too-many-instance-attributes
+# pylint: disable=too-many-function-args
+# pylint: disable=c-extension-no-member
+# pylint: disable=no-member
+# pylint: disable=line-too-long
 
 from collections import deque
 import math
@@ -11,6 +17,7 @@ import defs
 
 
 class Terrain:
+    """Klasa reprezentująca teren"""
     def __init__(self, game, roughness):
         self.width = game.width
         self.height = game.height
@@ -81,12 +88,12 @@ class Terrain:
     def normalize(self, data, new_lower_bound, new_upper_bound):
         """Metoda ograniczająca wysokości terenu"""
 
-        min = np.min(data)
-        max = np.max(data)
-        range = max - min
+        my_min = np.min(data)
+        my_max = np.max(data)
+        my_range = my_max - my_min
         new_range = new_upper_bound - new_lower_bound
 
-        return [(a - min) * new_range // range + new_lower_bound for a in data]
+        return [(a - my_min) * new_range // my_range + new_lower_bound for a in data]
 
     def make_hole(self, x, y, rad):
         """Tworzy dziuręw miejscu uderzenia pocisku"""

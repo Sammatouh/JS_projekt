@@ -99,9 +99,11 @@ class Game:
                     for event in pygame.event.get():
                         if event.type == pygame.QUIT:
                             self.bullet_flying = False
+                            self.playing = False
                             self.running = False
                         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                             self.bullet_flying = False
+                            self.playing = False
                             self.running = False
 
                     # sprawdzanie czy nastąpiła kolizja pocisku z terenem

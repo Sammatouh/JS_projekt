@@ -12,6 +12,7 @@ class Game:
     def __init__(self, scr_width, scr_height, clock):
         self.running = True
         self.playing = False
+        self.game_over = False
         self.bullet_flying = False
 
         self.bullet = None
@@ -28,6 +29,33 @@ class Game:
         self.current_player = None
         self.idle_player = None
 
+    def start_screen(self):
+        waiting = True
+        while (not self.playing) and waiting:
+            self.clock.tick(defs.FPS)
+            self.screen.fill(defs.Colors.BACKGROUND_COLOR)
+            self.fixed_info_to_screen(defs.TITLE, defs.Colors.BLACK, 1.90, self.width//2, 100)
+            self.fixed_info_to_screen("Press P to play", defs.Colors.LIGHT_GREY, 2.50, self.width//2, self.height//2)
+            self.fixed_info_to_screen("Controls:", defs.Colors.BLACK, 0.15, self.width//2, 450)
+            self.fixed_info_to_screen("UP arrow / DOWN arrow   -   power", defs.Colors.BLACK, 0.15, self.width//2, 470)
+            self.fixed_info_to_screen("LEFT arrow / RIGHT arrow   -   angle", defs.Colors.BLACK, 0.15, self.width // 2, 490)
+            self.fixed_info_to_screen("Press ESC to quit", defs.Colors.LIGHT_GREY, 0.15, self.width // 2, 550)
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    waiting = False
+                    self.running = False
+                    break
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                    waiting = False
+                    self.running = False
+                    break
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_p:
+                    waiting = False
+                    self.playing = True
+
+            pygame.display.flip()
+
     def new_game(self):
         """Rozpoczęcie nowej gry"""
         self.terrain.generate()
@@ -39,9 +67,8 @@ class Game:
 
     def game_loop(self):
         """Pętla główna gry"""
-        self.playing = True
         while self.playing:
-            self.clock.tick(30)
+            self.clock.tick(defs.FPS)
 
             self.screen.fill(defs.Colors.BACKGROUND_COLOR)  # background color
             self.screen.blit(self.terrain.surface, (0, 0))
@@ -86,7 +113,7 @@ class Game:
                             self.bullet_flying = False
 
                     self.bullet.update()
-                    self.screen.fill(defs.Colors.BACKGROUND_COLOR)  # background color
+                    self.screen.fill(defs.Colors.BACKGROUND_COLOR)
                     self.screen.blit(self.terrain.surface, (0, 0))
                     self.bullet.draw(self.screen)
                     self.refresh_screen()
@@ -94,6 +121,7 @@ class Game:
                 if not self.bullet_flying:
                     if len(self.players) < 2:
                         self.playing = False
+                        self.game_over = True
                         break
 
                     if self.current_player == self.players[0]:
@@ -105,15 +133,47 @@ class Game:
 
             self.refresh_screen()
 
+    def go_screen(self):
+        waiting = True
+        while self.game_over and waiting:
+            self.screen.fill(defs.Colors.BACKGROUND_COLOR)
+            self.fixed_info_to_screen("Player  " + str(self.current_player.side) + "  wins", defs.Colors.BLACK, 2.80, self.width//2, 100)
+            self.fixed_info_to_screen("Press N to play again", defs.Colors.LIGHT_GREY, 2.50, self.width // 2, self.height // 2)
+            self.fixed_info_to_screen("Press ESC to quit", defs.Colors.LIGHT_GREY, 0.15, self.width // 2, 490)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    waiting = False
+                    self.running = False
+                    break
+
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                    waiting = False
+                    self.running = False
+                    break
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_n:
+                    waiting = False
+                    self.playing = True
+
+            pygame.display.flip()
+
     def draw_players(self):
         """Rysuje graczy na ekranie"""
         for player in self.players:
             player.draw(self.screen)
 
-    def info_to_screen(self, msg, x, y):
+    def info_to_screen(self, msg, color, font, x, y):
         """Wyświetla dany tekst z początkiem w danych współrzędnych"""
-        text = defs.Assets.DEFAULT_FONT.render(msg, True, (0, 0, 0))
-        self.screen.blit(text, [x, y])
+        text = defs.Assets.FONTS[font].render(msg, True, color)
+        text_rect = text.get_rect()
+        text_rect.x, text_rect.y = (x, y)
+        self.screen.blit(text, text_rect)
+
+    def fixed_info_to_screen(self, msg, color, font, x, y):
+        """Wyświetla dany tekst z początkiem w danych współrzędnych"""
+        text = defs.Assets.FONTS[font].render(msg, True, color)
+        text_rect = text.get_rect()
+        text_rect.center = (x, y)
+        self.screen.blit(text, text_rect)
 
     def refresh_screen(self):
         self.draw_players()

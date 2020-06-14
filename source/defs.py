@@ -2,13 +2,16 @@
 
 import pygame
 
+TITLE = "Scorch Artillery Game"
+
 SCR_WIDTH, SCR_HEIGHT = 1025, 600
 CANNON_W, CANNON_H = 65, 46
 ANGLE_MIN, ANGLE_MAX = 0, 60
 POWER_MIN, POWER_MAX = 20, 100
-LEFT, RIGHT = 0, 1
+LEFT, RIGHT = 1, 2
 CANNON_IMG_COLS = 6
 HOLE_RADIUS = 20
+FPS = 30
 
 TIME_STEP = 0.012
 
@@ -28,6 +31,8 @@ class Colors:
     TRANSPARENT_COLOR = (255, 255, 255)
     TERRAIN_COLOR = (50, 160, 80)
     BASE_COLOR = (107, 110, 108)
+    BLACK = (0, 0, 0)
+    LIGHT_GREY = (130, 130, 130)
 
 
 class Assets:
@@ -35,7 +40,10 @@ class Assets:
 
     @staticmethod
     def load():
-        Assets.DEFAULT_FONT = pygame.font.SysFont(None, 18)
+        Assets.FONTS = {0.15: pygame.font.Font("assets/ArconRegular.otf", 15),
+                        1.90: pygame.font.Font("assets/ExplodeFont.ttf", 90),
+                        2.80: pygame.font.Font("assets/PAMPARAY.otf", 80),
+                        2.50: pygame.font.Font("assets/PAMPARAY.otf", 50)}
         Assets.ICON = pygame.image.load("assets/icon.png")
         Assets.BULLET_IMG = pygame.image.load("assets/bullet.png")
-        Assets.CANNON_IMAGE = {0: pygame.image.load("assets/cannon_left.png"), 1: pygame.image.load("assets/cannon_right.png")}
+        Assets.CANNON_IMAGE = {1: pygame.image.load("assets/cannon_left.png"), 2: pygame.image.load("assets/cannon_right.png")}

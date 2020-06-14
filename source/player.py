@@ -67,5 +67,5 @@ class Player:
         surface.blit(plr_surface, (self.x, self.y))
 
         if self.game.current_player == self:
-            self.game.info_to_screen("Angle: {}".format(self.barrel_angle), self.x, 10)
-            self.game.info_to_screen("Power: {}".format(self.power), self.x, 22)
+            self.game.info_to_screen("Angle: {}".format(self.barrel_angle), defs.Colors.BLACK, 0.15, self.x, 10)
+            self.game.info_to_screen("Power: {}".format(self.power), defs.Colors.BLACK, 0.15, self.x, 22)
